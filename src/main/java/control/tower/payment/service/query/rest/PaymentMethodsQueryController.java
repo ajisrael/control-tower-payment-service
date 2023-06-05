@@ -21,16 +21,16 @@ public class PaymentMethodsQueryController {
     QueryGateway queryGateway;
 
     @GetMapping
-    public List<PaymentMethodRestModel> getProducts() {
+    public List<PaymentMethodRestModel> getPaymentMethods() {
         FindAllPaymentMethodsQuery findAllPaymentMethodsQuery = new FindAllPaymentMethodsQuery();
 
         List<PaymentMethodEntity> paymentMethodEntities = queryGateway.query(findAllPaymentMethodsQuery,
                 ResponseTypes.multipleInstancesOf(PaymentMethodEntity.class)).join();
 
-        return convertProductEntitiesToProductRestModels(paymentMethodEntities);
+        return convertPaymentMethodEntitiesToPaymentMethodRestModels(paymentMethodEntities);
     }
 
-    private List<PaymentMethodRestModel> convertProductEntitiesToProductRestModels(
+    private List<PaymentMethodRestModel> convertPaymentMethodEntitiesToPaymentMethodRestModels(
             List<PaymentMethodEntity> paymentMethodEntities) {
         List<PaymentMethodRestModel> paymentMethodRestModels = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yy");

@@ -32,7 +32,7 @@ public class PaymentMethodAggregateTest {
     }
 
     @Test
-    void shouldCreateProductAggregate() {
+    void shouldCreatePaymentMethodAggregate() {
         fixture.givenNoPriorActivity()
                 .when(
                         CreatePaymentMethodCommand.builder()
