@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,14 @@ public class PaymentMethodsQueryController {
     private List<PaymentMethodRestModel> convertProductEntitiesToProductRestModels(
             List<PaymentMethodEntity> paymentMethodEntities) {
         List<PaymentMethodRestModel> paymentMethodRestModels = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yy");
 
         for (PaymentMethodEntity paymentMethodEntity : paymentMethodEntities) {
             paymentMethodRestModels.add(new PaymentMethodRestModel(
                     paymentMethodEntity.getPaymentId(),
                     paymentMethodEntity.getUserId(),
                     paymentMethodEntity.getMaskedCardNumber(),
-                    paymentMethodEntity.getExpirationDate()
+                    dateFormat.format(paymentMethodEntity.getExpirationDate())
             ));
         }
 
