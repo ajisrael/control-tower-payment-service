@@ -14,12 +14,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "productlookup")
-public class ProductLookupEntity implements Serializable {
+@Table(name = "paymentmethodlookup")
+public class PaymentMethodLookupEntity implements Serializable {
 
-    private static final long serialVersionUID = -4787108556148621715L;
+    private static final long serialVersionUID = -4787108556148621716L;
 
     @Id
     @Column(unique = true)
-    private String productId;
+    private String paymentId;
+    @Column(unique = true)
+    private String cardNumber;
 }

@@ -1,4 +1,4 @@
 package control.tower.product.service.query;
 
-public class FindAllProductsQuery {
+public class FindAllPaymentMethodsQuery {
 }

@@ -1,7 +1,7 @@
 package control.tower.product.service;
 
-import control.tower.product.service.command.interceptors.CreateProductCommandInterceptor;
-import control.tower.product.service.core.errorhandling.ProductServiceEventsErrorHandler;
+import control.tower.product.service.command.interceptors.CreatePaymentMethodCommandInterceptor;
+import control.tower.product.service.core.errorhandling.PaymentServiceEventsErrorHandler;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +12,22 @@ import org.springframework.context.ApplicationContext;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class ProductServiceApplication {
+public class PaymentServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProductServiceApplication.class, args);
+		SpringApplication.run(PaymentServiceApplication.class, args);
 	}
 
 	@Autowired
 	public void registerCreateProductCommandInterceptor(ApplicationContext context, CommandBus commandBus) {
 		commandBus.registerDispatchInterceptor(
-				context.getBean(CreateProductCommandInterceptor.class)
+				context.getBean(CreatePaymentMethodCommandInterceptor.class)
 		);
 	}
 
 	@Autowired
 	public void configure(EventProcessingConfigurer configurer) {
 		configurer.registerListenerInvocationErrorHandler("product-group",
-				configuration -> new ProductServiceEventsErrorHandler());
+				configuration -> new PaymentServiceEventsErrorHandler());
 	}
 }
