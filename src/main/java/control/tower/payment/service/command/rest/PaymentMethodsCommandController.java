@@ -1,6 +1,6 @@
 package control.tower.payment.service.command.rest;
 
-import control.tower.payment.service.command.CreatePaymentMethodCommand;
+import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

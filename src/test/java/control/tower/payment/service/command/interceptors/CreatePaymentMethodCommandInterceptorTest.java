@@ -1,6 +1,6 @@
 package control.tower.payment.service.command.interceptors;
 
-import control.tower.payment.service.command.CreatePaymentMethodCommand;
+import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
 import control.tower.payment.service.core.data.PaymentMethodLookupEntity;
 import control.tower.payment.service.core.data.PaymentMethodLookupRepository;
 import org.axonframework.commandhandling.CommandMessage;

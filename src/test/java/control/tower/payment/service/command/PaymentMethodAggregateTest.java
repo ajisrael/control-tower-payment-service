@@ -1,5 +1,6 @@
 package control.tower.payment.service.command;
 
+import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
 import control.tower.payment.service.core.events.PaymentMethodCreatedEvent;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;

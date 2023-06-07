@@ -1,5 +1,6 @@
 package control.tower.payment.service.command;
 
+import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
 import control.tower.payment.service.core.events.PaymentMethodCreatedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,6 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.util.Date;
-
-import static control.tower.payment.service.core.utils.Helper.isNullOrBlank;
 
 @Aggregate
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class PaymentMethodAggregate {
 
     @CommandHandler
     public PaymentMethodAggregate(CreatePaymentMethodCommand command) {
-        validateCreatePaymentMethodCommand(command);
+        command.validate();
 
         PaymentMethodCreatedEvent event = PaymentMethodCreatedEvent.builder()
                 .paymentId(command.getPaymentId())
@@ -45,25 +44,5 @@ public class PaymentMethodAggregate {
         this.expirationDate = event.getExpirationDate();
     }
 
-    private void validateCreatePaymentMethodCommand(CreatePaymentMethodCommand command) {
-        if (isNullOrBlank(command.getPaymentId())) {
-            throw new IllegalArgumentException("Payment id cannot be empty");
-        }
 
-        if (isNullOrBlank(command.getUserId())) {
-            throw new IllegalArgumentException("User id cannot be empty");
-        }
-
-        if (isNullOrBlank(command.getCardNumber())) {
-            throw new IllegalArgumentException("Card number cannot be empty");
-        }
-
-        if (command.getExpirationDate() == null) {
-            throw new IllegalArgumentException("Expiration date cannot be null");
-        }
-
-        if (isNullOrBlank(command.getSecurityCode())) {
-            throw new IllegalArgumentException("Security code cannot be empty");
-        }
-    }
 }
