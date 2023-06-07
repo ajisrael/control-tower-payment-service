@@ -12,7 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-@ProcessingGroup("product-group")
+@ProcessingGroup("payment-group")
 public class PaymentMethodEventsHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentMethodEventsHandler.class);

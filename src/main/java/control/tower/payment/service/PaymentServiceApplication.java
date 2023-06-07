@@ -27,7 +27,7 @@ public class PaymentServiceApplication {
 
 	@Autowired
 	public void configure(EventProcessingConfigurer configurer) {
-		configurer.registerListenerInvocationErrorHandler("product-group",
+		configurer.registerListenerInvocationErrorHandler("payment-group",
 				configuration -> new PaymentServiceEventsErrorHandler());
 	}
 }
