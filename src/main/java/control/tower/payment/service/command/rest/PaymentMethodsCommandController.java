@@ -1,8 +1,10 @@
 package control.tower.payment.service.command.rest;
 
 import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
+import control.tower.payment.service.command.commands.RemovePaymentMethodCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,15 @@ public class PaymentMethodsCommandController {
                 .build();
 
         return commandGateway.sendAndWait(createPaymentMethodCommand);
+    }
+
+    @DeleteMapping
+    public String removePaymentMethod(@Valid @RequestBody RemovePaymentMethodRestModel removePaymentMethodRestModel) {
+        RemovePaymentMethodCommand removePaymentMethodCommand = RemovePaymentMethodCommand.builder()
+                .paymentId(removePaymentMethodRestModel.getPaymentId())
+                .build();
+
+        return commandGateway.sendAndWait(removePaymentMethodCommand);
     }
 }
 

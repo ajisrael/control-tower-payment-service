@@ -3,6 +3,7 @@ package control.tower.payment.service.query;
 import control.tower.payment.service.core.data.PaymentMethodEntity;
 import control.tower.payment.service.core.data.PaymentMethodRepository;
 import control.tower.payment.service.core.events.PaymentMethodCreatedEvent;
+import control.tower.payment.service.core.events.PaymentMethodRemovedEvent;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+
+import static control.tower.core.utils.Helper.throwErrorIfEntityDoesNotExist;
 
 @Component
 @ProcessingGroup("payment-group")
@@ -38,5 +41,18 @@ public class PaymentMethodEventsHandler {
         PaymentMethodEntity paymentMethodEntity = new PaymentMethodEntity();
         BeanUtils.copyProperties(event, paymentMethodEntity);
         paymentMethodRepository.save(paymentMethodEntity);
+    }
+
+    @EventHandler
+    public void on(PaymentMethodRemovedEvent event) {
+        PaymentMethodEntity paymentMethodEntity =
+                paymentMethodRepository.findByPaymentId(event.getPaymentId());
+
+        throwErrorIfEntityDoesNotExist(
+                paymentMethodEntity,
+                String.format("Payment method %s does not exist", event.getPaymentId())
+        );
+
+        paymentMethodRepository.delete(paymentMethodEntity);
     }
 }
