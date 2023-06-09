@@ -6,9 +6,9 @@ import org.springframework.beans.BeanUtils;
 import static control.tower.core.utils.Helper.calculateSHA256Hash;
 
 public class PaymentMethodHasher {
-    public static String createPaymentMethodHash(Object address) {
-        HashablePaymentMethod hashableAddress = new HashablePaymentMethod();
-        BeanUtils.copyProperties(address, hashableAddress);
-        return calculateSHA256Hash(hashableAddress.getCombinedValues());
+    public static String createPaymentMethodHash(Object paymentMethod) {
+        HashablePaymentMethod hashablePaymentMethod = new HashablePaymentMethod();
+        BeanUtils.copyProperties(paymentMethod, hashablePaymentMethod);
+        return calculateSHA256Hash(hashablePaymentMethod.getCombinedValues());
     }
 }
