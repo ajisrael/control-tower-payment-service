@@ -1,6 +1,6 @@
 package control.tower.payment.service.query.rest;
 
-import control.tower.payment.service.query.FindAllPaymentMethodsQuery;
+import control.tower.payment.service.query.queries.FindAllPaymentMethodsQuery;
 import control.tower.payment.service.core.data.PaymentMethodEntity;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;

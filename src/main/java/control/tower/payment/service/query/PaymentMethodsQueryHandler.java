@@ -2,6 +2,7 @@ package control.tower.payment.service.query;
 
 import control.tower.payment.service.core.data.PaymentMethodEntity;
 import control.tower.payment.service.core.data.PaymentMethodRepository;
+import control.tower.payment.service.query.queries.FindAllPaymentMethodsQuery;
 import lombok.AllArgsConstructor;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
