@@ -6,5 +6,5 @@ public interface PaymentMethodLookupRepository extends JpaRepository<PaymentMeth
 
     PaymentMethodLookupEntity findByPaymentId(String paymentId);
 
-    PaymentMethodLookupEntity findByPaymentIdOrCardNumber(String paymentId, String cardNumber);
+    PaymentMethodLookupEntity findByPaymentMethodHash(String paymentMethodHash);
 }

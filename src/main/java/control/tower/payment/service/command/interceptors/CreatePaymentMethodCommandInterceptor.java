@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import static control.tower.payment.service.core.utils.PaymentMethodHasher.createPaymentMethodHash;
+
 @Component
 public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
 
@@ -28,20 +30,27 @@ public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInt
             List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
 
-            LOGGER.info("Intercepted command: " + command.getPayloadType());
 
             if (CreatePaymentMethodCommand.class.equals(command.getPayloadType())) {
+                LOGGER.info("Intercepted command: " + command.getPayloadType());
 
                 CreatePaymentMethodCommand createPaymentMethodCommand = (CreatePaymentMethodCommand) command.getPayload();
 
-                PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentIdOrCardNumber(
-                        createPaymentMethodCommand.getPaymentId(), createPaymentMethodCommand.getCardNumber());
+                PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentId(
+                        createPaymentMethodCommand.getPaymentId());
 
                 if (paymentMethodLookupEntity != null) {
                     throw new IllegalStateException(
-                            String.format("Payment method with id %s or card number %s already exists",
-                                    createPaymentMethodCommand.getPaymentId(), createPaymentMethodCommand.getCardNumber())
+                            String.format("Payment method with id %s already exists",
+                                    createPaymentMethodCommand.getPaymentId())
                     );
+                }
+
+                paymentMethodLookupEntity = paymentMethodLookupRepository
+                        .findByPaymentMethodHash(createPaymentMethodHash(createPaymentMethodCommand));
+
+                if (paymentMethodLookupEntity != null) {
+                    throw new IllegalStateException("This payment method already exists for this user");
                 }
             }
 

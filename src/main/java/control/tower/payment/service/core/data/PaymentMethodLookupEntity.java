@@ -23,5 +23,5 @@ public class PaymentMethodLookupEntity implements Serializable {
     @Column(unique = true)
     private String paymentId;
     @Column(unique = true)
-    private String cardNumber;
+    private String paymentMethodHash;
 }

@@ -19,7 +19,7 @@ public class PaymentServiceApplication {
 	}
 
 	@Autowired
-	public void registerCreateProductCommandInterceptor(ApplicationContext context, CommandBus commandBus) {
+	public void registerCreatePaymentMethodCommandInterceptor(ApplicationContext context, CommandBus commandBus) {
 		commandBus.registerDispatchInterceptor(
 				context.getBean(CreatePaymentMethodCommandInterceptor.class)
 		);
