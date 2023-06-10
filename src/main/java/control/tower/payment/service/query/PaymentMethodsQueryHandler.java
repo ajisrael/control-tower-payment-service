@@ -9,7 +9,6 @@ import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -24,9 +23,7 @@ public class PaymentMethodsQueryHandler {
 
     @QueryHandler
     public PaymentMethodEntity findPaymentMethod(FindPaymentMethodQuery query) {
-        Optional<PaymentMethodEntity> paymentMethodEntityOptional = paymentMethodRepository.findById(query.getPaymentId());
-
-        return paymentMethodEntityOptional.orElseThrow(
+        return paymentMethodRepository.findById(query.getPaymentId()).orElseThrow(
                 () -> new IllegalStateException(String.format("Payment method %s does not exist", query.getPaymentId())));
     }
 }
