@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST;
+
 @Component
 @AllArgsConstructor
 public class PaymentMethodsQueryHandler {
@@ -24,6 +26,6 @@ public class PaymentMethodsQueryHandler {
     @QueryHandler
     public PaymentMethodEntity findPaymentMethod(FindPaymentMethodQuery query) {
         return paymentMethodRepository.findById(query.getPaymentId()).orElseThrow(
-                () -> new IllegalStateException(String.format("Payment method %s does not exist", query.getPaymentId())));
+                () -> new IllegalStateException(String.format(PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST, query.getPaymentId())));
     }
 }

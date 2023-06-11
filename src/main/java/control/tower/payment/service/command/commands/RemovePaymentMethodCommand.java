@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-import static control.tower.core.utils.Helper.isNullOrBlank;
+import static control.tower.core.utils.Helper.throwExceptionIfParameterIsEmpty;
+import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_ID_CANNOT_BE_EMPTY;
 
 @Getter
 @Builder
@@ -14,8 +15,6 @@ public class RemovePaymentMethodCommand {
     private String paymentId;
 
     public void validate() {
-        if (isNullOrBlank(this.getPaymentId())) {
-            throw new IllegalArgumentException("Payment id cannot be empty");
-        }
+        throwExceptionIfParameterIsEmpty(this.getPaymentId(), PAYMENT_ID_CANNOT_BE_EMPTY);
     }
 }

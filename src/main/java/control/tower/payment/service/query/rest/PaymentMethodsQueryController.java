@@ -24,9 +24,7 @@ public class PaymentMethodsQueryController {
 
     @GetMapping
     public List<PaymentMethodRestModel> getAllPaymentMethods() {
-        FindAllPaymentMethodsQuery findAllPaymentMethodsQuery = new FindAllPaymentMethodsQuery();
-
-        List<PaymentMethodEntity> paymentMethodEntities = queryGateway.query(findAllPaymentMethodsQuery,
+        List<PaymentMethodEntity> paymentMethodEntities = queryGateway.query(new FindAllPaymentMethodsQuery(),
                 ResponseTypes.multipleInstancesOf(PaymentMethodEntity.class)).join();
 
         return convertPaymentMethodEntitiesToPaymentMethodRestModels(paymentMethodEntities);

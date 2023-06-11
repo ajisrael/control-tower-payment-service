@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import static control.tower.core.utils.Helper.throwErrorIfEntityDoesNotExist;
+import static control.tower.core.utils.Helper.throwExceptionIfEntityDoesNotExist;
+import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST;
 
 @Component
 @ProcessingGroup("payment-group")
@@ -48,10 +49,8 @@ public class PaymentMethodEventsHandler {
         PaymentMethodEntity paymentMethodEntity =
                 paymentMethodRepository.findByPaymentId(event.getPaymentId());
 
-        throwErrorIfEntityDoesNotExist(
-                paymentMethodEntity,
-                String.format("Payment method %s does not exist", event.getPaymentId())
-        );
+        throwExceptionIfEntityDoesNotExist(paymentMethodEntity,
+                String.format(PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST, event.getPaymentId()));
 
         paymentMethodRepository.delete(paymentMethodEntity);
     }

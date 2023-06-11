@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import static control.tower.core.constants.LogMessages.INTERCEPTED_COMMAND;
+import static control.tower.core.utils.Helper.throwExceptionIfEntityDoesExist;
+import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_ALREADY_EXISTS_FOR_USER;
+import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_ALREADY_EXISTS;
 import static control.tower.payment.service.core.utils.PaymentMethodHasher.createPaymentMethodHash;
 
 @Component
@@ -32,26 +36,20 @@ public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInt
 
 
             if (CreatePaymentMethodCommand.class.equals(command.getPayloadType())) {
-                LOGGER.info("Intercepted command: " + command.getPayloadType());
+                LOGGER.info(String.format(INTERCEPTED_COMMAND, command.getPayloadType()));
 
                 CreatePaymentMethodCommand createPaymentMethodCommand = (CreatePaymentMethodCommand) command.getPayload();
 
                 PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentId(
                         createPaymentMethodCommand.getPaymentId());
 
-                if (paymentMethodLookupEntity != null) {
-                    throw new IllegalStateException(
-                            String.format("Payment method with id %s already exists",
-                                    createPaymentMethodCommand.getPaymentId())
-                    );
-                }
+                throwExceptionIfEntityDoesExist(paymentMethodLookupEntity,
+                        String.format(PAYMENT_METHOD_WITH_ID_ALREADY_EXISTS, createPaymentMethodCommand.getPaymentId()));
 
                 paymentMethodLookupEntity = paymentMethodLookupRepository
                         .findByPaymentMethodHash(createPaymentMethodHash(createPaymentMethodCommand));
 
-                if (paymentMethodLookupEntity != null) {
-                    throw new IllegalStateException("This payment method already exists for this user");
-                }
+                throwExceptionIfEntityDoesExist(paymentMethodLookupEntity, PAYMENT_METHOD_ALREADY_EXISTS_FOR_USER);
             }
 
             return command;

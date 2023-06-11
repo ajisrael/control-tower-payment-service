@@ -9,7 +9,8 @@ import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
-import static control.tower.core.utils.Helper.throwErrorIfEntityDoesNotExist;
+import static control.tower.core.utils.Helper.throwExceptionIfEntityDoesNotExist;
+import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST;
 import static control.tower.payment.service.core.utils.PaymentMethodHasher.createPaymentMethodHash;
 
 @Component
@@ -31,10 +32,8 @@ public class PaymentMethodLookupEventsHandler {
         PaymentMethodLookupEntity paymentMethodLookupEntity =
                 paymentMethodLookupRepository.findByPaymentId(event.getPaymentId());
 
-        throwErrorIfEntityDoesNotExist(
-                paymentMethodLookupEntity,
-                String.format("Payment method %s does not exist", event.getPaymentId())
-        );
+        throwExceptionIfEntityDoesNotExist(paymentMethodLookupEntity,
+                String.format(PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST, event.getPaymentId()));
 
         paymentMethodLookupRepository.delete(paymentMethodLookupEntity);
     }

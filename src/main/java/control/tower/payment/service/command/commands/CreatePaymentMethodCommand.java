@@ -6,7 +6,8 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.Date;
 
-import static control.tower.core.utils.Helper.isNullOrBlank;
+import static control.tower.core.utils.Helper.*;
+import static control.tower.payment.service.core.constants.ExceptionMessages.*;
 
 @Getter
 @Builder
@@ -20,24 +21,10 @@ public class CreatePaymentMethodCommand {
     private String securityCode;
 
     public void validate() {
-        if (isNullOrBlank(this.getPaymentId())) {
-            throw new IllegalArgumentException("Payment id cannot be empty");
-        }
-
-        if (isNullOrBlank(this.getUserId())) {
-            throw new IllegalArgumentException("User id cannot be empty");
-        }
-
-        if (isNullOrBlank(this.getCardNumber())) {
-            throw new IllegalArgumentException("Card number cannot be empty");
-        }
-
-        if (this.getExpirationDate() == null) {
-            throw new IllegalArgumentException("Expiration date cannot be null");
-        }
-
-        if (isNullOrBlank(this.getSecurityCode())) {
-            throw new IllegalArgumentException("Security code cannot be empty");
-        }
+        throwExceptionIfParameterIsEmpty(this.getPaymentId(), PAYMENT_ID_CANNOT_BE_EMPTY);
+        throwExceptionIfParameterIsEmpty(this.getUserId(), USER_ID_CANNOT_BE_EMPTY);
+        throwExceptionIfParameterIsEmpty(this.getCardNumber(), CARD_NUMBER_CANNOT_BE_EMPTY);
+        throwExceptionIfParameterIsNull(this.getExpirationDate(), EXPIRATION_DATE_CANNOT_BE_NULL);
+        throwExceptionIfParameterIsEmpty(this.getSecurityCode(), SECURITY_CODE_CANNOT_BE_EMPTY);
     }
 }
