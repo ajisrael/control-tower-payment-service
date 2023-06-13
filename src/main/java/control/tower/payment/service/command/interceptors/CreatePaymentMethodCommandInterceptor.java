@@ -34,11 +34,12 @@ public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInt
             List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
 
-
             if (CreatePaymentMethodCommand.class.equals(command.getPayloadType())) {
                 LOGGER.info(String.format(INTERCEPTED_COMMAND, command.getPayloadType()));
 
                 CreatePaymentMethodCommand createPaymentMethodCommand = (CreatePaymentMethodCommand) command.getPayload();
+
+                createPaymentMethodCommand.validate();
 
                 PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentId(
                         createPaymentMethodCommand.getPaymentId());

@@ -37,6 +37,8 @@ public class RemovePaymentMethodCommandInterceptor implements MessageDispatchInt
 
                 RemovePaymentMethodCommand removePaymentMethodCommand = (RemovePaymentMethodCommand) command.getPayload();
 
+                removePaymentMethodCommand.validate();
+
                 PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentId(
                         removePaymentMethodCommand.getPaymentId());
 

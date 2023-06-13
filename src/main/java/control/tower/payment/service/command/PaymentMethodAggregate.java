@@ -7,7 +7,6 @@ import control.tower.payment.service.core.events.PaymentMethodRemovedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
@@ -27,8 +26,6 @@ public class PaymentMethodAggregate {
 
     @CommandHandler
     public PaymentMethodAggregate(CreatePaymentMethodCommand command) {
-        command.validate();
-
         PaymentMethodCreatedEvent event = PaymentMethodCreatedEvent.builder()
                 .paymentId(command.getPaymentId())
                 .userId(command.getUserId())
@@ -42,8 +39,6 @@ public class PaymentMethodAggregate {
 
     @CommandHandler
     public void handle(RemovePaymentMethodCommand command) {
-        command.validate();
-
         PaymentMethodRemovedEvent event = PaymentMethodRemovedEvent.builder()
                 .paymentId(command.getPaymentId())
                 .build();
