@@ -1,6 +1,7 @@
 package control.tower.payment.service;
 
 import control.tower.payment.service.command.interceptors.CreatePaymentMethodCommandInterceptor;
+import control.tower.payment.service.command.interceptors.RemovePaymentMethodCommandInterceptor;
 import control.tower.payment.service.core.errorhandling.PaymentServiceEventsErrorHandler;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
@@ -19,9 +20,12 @@ public class PaymentServiceApplication {
 	}
 
 	@Autowired
-	public void registerCreatePaymentMethodCommandInterceptor(ApplicationContext context, CommandBus commandBus) {
+	public void registerPaymentCommandInterceptors(ApplicationContext context, CommandBus commandBus) {
 		commandBus.registerDispatchInterceptor(
 				context.getBean(CreatePaymentMethodCommandInterceptor.class)
+		);
+		commandBus.registerDispatchInterceptor(
+				context.getBean(RemovePaymentMethodCommandInterceptor.class)
 		);
 	}
 
