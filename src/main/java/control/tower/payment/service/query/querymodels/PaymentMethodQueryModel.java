@@ -1,11 +1,11 @@
-package control.tower.payment.service.query.rest;
+package control.tower.payment.service.query.querymodels;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PaymentMethodRestModel {
+public class PaymentMethodQueryModel {
 
     private String paymentId;
     private String userId;
