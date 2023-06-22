@@ -17,6 +17,7 @@ import static control.tower.core.utils.Helper.throwExceptionIfEntityDoesExist;
 import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_ALREADY_EXISTS_FOR_USER;
 import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_ALREADY_EXISTS;
 import static control.tower.payment.service.core.utils.PaymentMethodHasher.createPaymentMethodHash;
+import static control.tower.payment.service.core.utils.WebClientService.doesUserExist;
 
 @Component
 public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
@@ -40,6 +41,12 @@ public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInt
                 CreatePaymentMethodCommand createPaymentMethodCommand = (CreatePaymentMethodCommand) command.getPayload();
 
                 createPaymentMethodCommand.validate();
+
+                boolean userDoesExist = doesUserExist(createPaymentMethodCommand.getUserId());
+
+                if (!userDoesExist) {
+                    throw new IllegalArgumentException("User does not exist, cannot create payment method");
+                }
 
                 PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentId(
                         createPaymentMethodCommand.getPaymentId());
