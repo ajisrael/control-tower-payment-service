@@ -20,10 +20,11 @@ public class PaymentMethodEntity implements Serializable {
     @Column(unique = true)
     private String paymentId;
     private String userId;
-    @Column(unique = true)
     private String cardNumber;
     private Date expirationDate;
     private String securityCode;
+    @Column(unique = true)
+    private String paymentMethodHash;
 
     public String getMaskedCardNumber() {
         return maskStringExceptLastFour(cardNumber);

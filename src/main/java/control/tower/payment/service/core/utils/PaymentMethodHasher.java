@@ -6,6 +6,11 @@ import org.springframework.beans.BeanUtils;
 import static control.tower.core.utils.Helper.calculateSHA256Hash;
 
 public class PaymentMethodHasher {
+
+    private PaymentMethodHasher() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String createPaymentMethodHash(Object paymentMethod) {
         HashablePaymentMethod hashablePaymentMethod = new HashablePaymentMethod();
         BeanUtils.copyProperties(paymentMethod, hashablePaymentMethod);

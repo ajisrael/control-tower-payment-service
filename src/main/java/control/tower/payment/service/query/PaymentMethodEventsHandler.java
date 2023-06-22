@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import static control.tower.core.utils.Helper.throwExceptionIfEntityDoesNotExist;
 import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST;
+import static control.tower.payment.service.core.utils.PaymentMethodHasher.createPaymentMethodHash;
 
 @Component
 @ProcessingGroup("payment-group")
@@ -41,6 +42,7 @@ public class PaymentMethodEventsHandler {
     public void on(PaymentMethodCreatedEvent event) {
         PaymentMethodEntity paymentMethodEntity = new PaymentMethodEntity();
         BeanUtils.copyProperties(event, paymentMethodEntity);
+        paymentMethodEntity.setPaymentMethodHash(createPaymentMethodHash(event));
         paymentMethodRepository.save(paymentMethodEntity);
     }
 
