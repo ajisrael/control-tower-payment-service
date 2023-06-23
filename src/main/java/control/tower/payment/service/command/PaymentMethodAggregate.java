@@ -1,7 +1,7 @@
 package control.tower.payment.service.command;
 
 import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
-import control.tower.payment.service.command.commands.RemovePaymentMethodCommand;
+import control.tower.core.commands.RemovePaymentMethodCommand;
 import control.tower.payment.service.core.events.PaymentMethodCreatedEvent;
 import control.tower.payment.service.core.events.PaymentMethodRemovedEvent;
 import lombok.Getter;

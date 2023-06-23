@@ -9,7 +9,6 @@ public class ExceptionMessages {
         throw new IllegalStateException("Constants class");
     }
 
-    public static final String PAYMENT_ID_CANNOT_BE_EMPTY = String.format(PARAMETER_CANNOT_BE_EMPTY, "paymentId");
     public static final String USER_ID_CANNOT_BE_EMPTY = String.format(PARAMETER_CANNOT_BE_EMPTY, "userId");
     public static final String CARD_NUMBER_CANNOT_BE_EMPTY = String.format(PARAMETER_CANNOT_BE_EMPTY, "cardNumber");
     public static final String EXPIRATION_DATE_CANNOT_BE_NULL = String.format(PARAMETER_CANNOT_BE_NULL, "expirationDate");

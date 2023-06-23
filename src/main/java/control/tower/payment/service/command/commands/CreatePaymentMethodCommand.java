@@ -7,6 +7,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import java.util.Date;
 
 import static control.tower.core.utils.Helper.*;
+import static control.tower.core.constants.ExceptionMessages.PAYMENT_ID_CANNOT_BE_EMPTY;
 import static control.tower.payment.service.core.constants.ExceptionMessages.*;
 
 @Getter
