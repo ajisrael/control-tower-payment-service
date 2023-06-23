@@ -1,5 +1,6 @@
 package control.tower.payment.service.query.rest;
 
+import control.tower.payment.service.query.queries.FindAllPaymentMethodsForUserQuery;
 import control.tower.payment.service.query.queries.FindAllPaymentMethodsQuery;
 import control.tower.payment.service.query.querymodels.PaymentMethodQueryModel;
 import control.tower.payment.service.query.queries.FindPaymentMethodQuery;
@@ -29,5 +30,11 @@ public class PaymentMethodsQueryController {
     public PaymentMethodQueryModel getPaymentMethod(String paymentId) {
         return queryGateway.query(new FindPaymentMethodQuery(paymentId),
                 ResponseTypes.instanceOf(PaymentMethodQueryModel.class)).join();
+    }
+
+    @GetMapping(params = "userId")
+    public List<PaymentMethodQueryModel> getAllPaymentMethodsForUser(String userId) {
+        return queryGateway.query(new FindAllPaymentMethodsForUserQuery(userId),
+                ResponseTypes.multipleInstancesOf(PaymentMethodQueryModel.class)).join();
     }
 }

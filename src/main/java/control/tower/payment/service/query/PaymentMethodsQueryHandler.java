@@ -2,6 +2,7 @@ package control.tower.payment.service.query;
 
 import control.tower.payment.service.core.data.PaymentMethodEntity;
 import control.tower.payment.service.core.data.PaymentMethodRepository;
+import control.tower.payment.service.query.queries.FindAllPaymentMethodsForUserQuery;
 import control.tower.payment.service.query.queries.FindAllPaymentMethodsQuery;
 import control.tower.payment.service.query.queries.FindPaymentMethodQuery;
 import control.tower.payment.service.query.querymodels.PaymentMethodQueryModel;
@@ -34,6 +35,17 @@ public class PaymentMethodsQueryHandler {
                 () -> new IllegalStateException(String.format(PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST, query.getPaymentId())));
 
         return convertPaymentMethodEntityToPaymentMethodQueryModel(paymentMethodEntity);
+    }
+
+    @QueryHandler
+    public List<PaymentMethodQueryModel> findAllPaymentMethodsForUser(FindAllPaymentMethodsForUserQuery query) {
+        List<PaymentMethodEntity> paymentMethodEntities = paymentMethodRepository.findByUserId(query.getUserId());
+
+        if (paymentMethodEntities.isEmpty()) {
+            throw new IllegalArgumentException("No payment methods found for user: " + query.getUserId());
+        }
+
+        return convertPaymentMethodEntitiesToPaymentMethodQueryModels(paymentMethodEntities);
     }
 
     private List<PaymentMethodQueryModel> convertPaymentMethodEntitiesToPaymentMethodQueryModels(
