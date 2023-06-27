@@ -1,5 +1,6 @@
 package control.tower.payment.service;
 
+import control.tower.core.config.XStreamConfig;
 import control.tower.payment.service.command.interceptors.CreatePaymentMethodCommandInterceptor;
 import control.tower.payment.service.command.interceptors.RemovePaymentMethodCommandInterceptor;
 import control.tower.payment.service.core.errorhandling.PaymentServiceEventsErrorHandler;
@@ -10,9 +11,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 
 @EnableDiscoveryClient
 @SpringBootApplication
+@Import({ XStreamConfig.class })
 public class PaymentServiceApplication {
 
 	public static void main(String[] args) {

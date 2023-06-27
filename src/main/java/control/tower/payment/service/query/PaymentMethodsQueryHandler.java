@@ -1,11 +1,12 @@
 package control.tower.payment.service.query;
 
+import control.tower.core.query.queries.DoesPaymentMethodExistForUserQuery;
 import control.tower.payment.service.core.data.PaymentMethodEntity;
 import control.tower.payment.service.core.data.PaymentMethodRepository;
-import control.tower.payment.service.query.queries.FindAllPaymentMethodsForUserQuery;
+import control.tower.core.query.queries.FindAllPaymentMethodsForUserQuery;
 import control.tower.payment.service.query.queries.FindAllPaymentMethodsQuery;
 import control.tower.payment.service.query.queries.FindPaymentMethodQuery;
-import control.tower.payment.service.query.querymodels.PaymentMethodQueryModel;
+import control.tower.core.query.querymodels.PaymentMethodQueryModel;
 import lombok.AllArgsConstructor;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
@@ -46,6 +47,14 @@ public class PaymentMethodsQueryHandler {
         }
 
         return convertPaymentMethodEntitiesToPaymentMethodQueryModels(paymentMethodEntities);
+    }
+
+    @QueryHandler
+    public boolean doesPaymentMethodExistForUser(DoesPaymentMethodExistForUserQuery query) {
+        PaymentMethodEntity paymentMethodEntity = paymentMethodRepository.findById(query.getPaymentId()).orElseThrow(
+                () -> new IllegalArgumentException("Payment method " + query.getPaymentId() + " does not exist"));
+
+        return paymentMethodEntity.getUserId().equals(query.getUserid());
     }
 
     private List<PaymentMethodQueryModel> convertPaymentMethodEntitiesToPaymentMethodQueryModels(
