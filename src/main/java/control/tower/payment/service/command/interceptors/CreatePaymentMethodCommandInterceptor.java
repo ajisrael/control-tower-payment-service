@@ -14,10 +14,9 @@ import java.util.function.BiFunction;
 
 import static control.tower.core.constants.LogMessages.INTERCEPTED_COMMAND;
 import static control.tower.core.utils.Helper.throwExceptionIfEntityDoesExist;
-import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_ALREADY_EXISTS_FOR_USER;
-import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_ALREADY_EXISTS;
+import static control.tower.payment.service.core.constants.ExceptionMessages.*;
 import static control.tower.payment.service.core.utils.PaymentMethodHasher.createPaymentMethodHash;
-import static control.tower.payment.service.core.utils.WebClientService.doesUserExist;
+import static control.tower.core.utils.WebClientService.doesUserExist;
 
 @Component
 public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
@@ -45,7 +44,9 @@ public class CreatePaymentMethodCommandInterceptor implements MessageDispatchInt
                 boolean userDoesExist = doesUserExist(createPaymentMethodCommand.getUserId());
 
                 if (!userDoesExist) {
-                    throw new IllegalArgumentException("User does not exist, cannot create payment method");
+                    throw new IllegalArgumentException(String.format(
+                            USER_WIth_ID_DOES_NOT_EXIST_CANNOT_CREATE_PAYMENT_METHOD,
+                            createPaymentMethodCommand.getUserId()));
                 }
 
                 PaymentMethodLookupEntity paymentMethodLookupEntity = paymentMethodLookupRepository.findByPaymentId(

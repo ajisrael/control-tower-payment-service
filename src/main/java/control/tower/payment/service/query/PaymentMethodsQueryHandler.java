@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static control.tower.payment.service.core.constants.ExceptionMessages.NO_PAYMENT_METHODS_FOUND_FOR_USER_WITH_ID;
 import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST;
 
 @Component
@@ -43,7 +44,7 @@ public class PaymentMethodsQueryHandler {
         List<PaymentMethodEntity> paymentMethodEntities = paymentMethodRepository.findByUserId(query.getUserId());
 
         if (paymentMethodEntities.isEmpty()) {
-            throw new IllegalArgumentException("No payment methods found for user: " + query.getUserId());
+            throw new IllegalArgumentException(String.format(NO_PAYMENT_METHODS_FOUND_FOR_USER_WITH_ID, query.getUserId()));
         }
 
         return convertPaymentMethodEntitiesToPaymentMethodQueryModels(paymentMethodEntities);
@@ -52,7 +53,7 @@ public class PaymentMethodsQueryHandler {
     @QueryHandler
     public boolean doesPaymentMethodExistForUser(DoesPaymentMethodExistForUserQuery query) {
         PaymentMethodEntity paymentMethodEntity = paymentMethodRepository.findById(query.getPaymentId()).orElseThrow(
-                () -> new IllegalArgumentException("Payment method " + query.getPaymentId() + " does not exist"));
+                () -> new IllegalArgumentException(String.format(PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST, query.getPaymentId())));
 
         return paymentMethodEntity.getUserId().equals(query.getUserid());
     }
