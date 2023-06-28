@@ -9,6 +9,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class RemovePaymentMethodRestModel {
 
-    @NotBlank(message = "Payment Id is a required field")
+    @NotBlank(message = "PaymentId is a required field")
     private String paymentId;
 }

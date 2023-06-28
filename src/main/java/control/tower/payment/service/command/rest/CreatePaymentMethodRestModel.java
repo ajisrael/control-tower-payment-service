@@ -22,14 +22,14 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 @NoArgsConstructor
 public class CreatePaymentMethodRestModel {
 
-    @NotBlank(message = "User id is a required field")
+    @NotBlank(message = "UserId is a required field")
     private String userId;
-    @NotBlank(message = "Card number is a required field")
+    @NotBlank(message = "CardNumber is a required field")
     private String cardNumber;
-    @NotNull(message = "Expiration date is a required field")
+    @NotNull(message = "ExpirationDate is a required field")
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private Date expirationDate;
-    @NotBlank(message = "Security code is a required field")
+    @NotBlank(message = "SecurityCode is a required field")
     private String securityCode;
 
     public static class CustomDateDeserializer extends JsonDeserializer<Date> {
