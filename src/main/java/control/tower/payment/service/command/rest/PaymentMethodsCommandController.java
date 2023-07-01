@@ -2,6 +2,8 @@ package control.tower.payment.service.command.rest;
 
 import control.tower.payment.service.command.commands.CreatePaymentMethodCommand;
 import control.tower.core.commands.RemovePaymentMethodCommand;
+import control.tower.payment.service.command.rest.requests.CreatePaymentMethodRequestModel;
+import control.tower.payment.service.command.rest.requests.RemovePaymentMethodRequestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
