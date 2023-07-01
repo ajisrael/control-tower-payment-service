@@ -4,6 +4,9 @@ import control.tower.payment.service.command.commands.CreatePaymentMethodCommand
 import control.tower.core.commands.RemovePaymentMethodCommand;
 import control.tower.payment.service.command.rest.requests.CreatePaymentMethodRequestModel;
 import control.tower.payment.service.command.rest.requests.RemovePaymentMethodRequestModel;
+import control.tower.payment.service.command.rest.responses.PaymentMethodCreatedResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +24,10 @@ public class PaymentMethodsCommandController {
     private CommandGateway commandGateway;
 
     @PostMapping
-    public String createPaymentMethod(@Valid @RequestBody CreatePaymentMethodRequestModel createPaymentMethodRequestModel) {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create payment method")
+    public PaymentMethodCreatedResponse createPaymentMethod(@Valid @RequestBody CreatePaymentMethodRequestModel createPaymentMethodRequestModel) {
         CreatePaymentMethodCommand createPaymentMethodCommand = CreatePaymentMethodCommand.builder()
                 .paymentId(UUID.randomUUID().toString())
                 .userId(createPaymentMethodRequestModel.getUserId())
@@ -33,19 +36,21 @@ public class PaymentMethodsCommandController {
                 .securityCode(createPaymentMethodRequestModel.getSecurityCode())
                 .build();
 
-        return commandGateway.sendAndWait(createPaymentMethodCommand);
+        String paymentId = commandGateway.sendAndWait(createPaymentMethodCommand);
+
+        return PaymentMethodCreatedResponse.builder().paymentId(paymentId).build();
     }
 
     @DeleteMapping
-    public String removePaymentMethod(@Valid @RequestBody RemovePaymentMethodRequestModel removePaymentMethodRequestModel) {
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Remove payment method")
+    public void removePaymentMethod(@Valid @RequestBody RemovePaymentMethodRequestModel removePaymentMethodRequestModel) {
         RemovePaymentMethodCommand removePaymentMethodCommand = RemovePaymentMethodCommand.builder()
                 .paymentId(removePaymentMethodRequestModel.getPaymentId())
                 .build();
 
-        return commandGateway.sendAndWait(removePaymentMethodCommand);
+        commandGateway.sendAndWait(removePaymentMethodCommand);
     }
 }
 
