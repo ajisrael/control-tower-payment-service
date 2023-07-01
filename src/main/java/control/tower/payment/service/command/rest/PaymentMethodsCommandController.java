@@ -6,17 +6,15 @@ import control.tower.payment.service.command.rest.requests.CreatePaymentMethodRe
 import control.tower.payment.service.command.rest.requests.RemovePaymentMethodRequestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/paymentmethods")
+@Tag(name = "Payment Command API")
 public class PaymentMethodsCommandController {
 
     @Autowired
@@ -24,6 +22,9 @@ public class PaymentMethodsCommandController {
 
     @PostMapping
     public String createPaymentMethod(@Valid @RequestBody CreatePaymentMethodRequestModel createPaymentMethodRequestModel) {
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create payment method")
         CreatePaymentMethodCommand createPaymentMethodCommand = CreatePaymentMethodCommand.builder()
                 .paymentId(UUID.randomUUID().toString())
                 .userId(createPaymentMethodRequestModel.getUserId())
@@ -37,6 +38,9 @@ public class PaymentMethodsCommandController {
 
     @DeleteMapping
     public String removePaymentMethod(@Valid @RequestBody RemovePaymentMethodRequestModel removePaymentMethodRequestModel) {
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Remove payment method")
         RemovePaymentMethodCommand removePaymentMethodCommand = RemovePaymentMethodCommand.builder()
                 .paymentId(removePaymentMethodRequestModel.getPaymentId())
                 .build();
