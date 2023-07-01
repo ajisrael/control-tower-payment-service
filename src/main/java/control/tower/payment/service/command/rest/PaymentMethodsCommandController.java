@@ -21,22 +21,22 @@ public class PaymentMethodsCommandController {
     private CommandGateway commandGateway;
 
     @PostMapping
-    public String createPaymentMethod(@Valid @RequestBody CreatePaymentMethodRestModel createPaymentMethodRestModel) {
+    public String createPaymentMethod(@Valid @RequestBody CreatePaymentMethodRequestModel createPaymentMethodRequestModel) {
         CreatePaymentMethodCommand createPaymentMethodCommand = CreatePaymentMethodCommand.builder()
                 .paymentId(UUID.randomUUID().toString())
-                .userId(createPaymentMethodRestModel.getUserId())
-                .cardNumber(createPaymentMethodRestModel.getCardNumber())
-                .expirationDate(createPaymentMethodRestModel.getExpirationDate())
-                .securityCode(createPaymentMethodRestModel.getSecurityCode())
+                .userId(createPaymentMethodRequestModel.getUserId())
+                .cardNumber(createPaymentMethodRequestModel.getCardNumber())
+                .expirationDate(createPaymentMethodRequestModel.getExpirationDate())
+                .securityCode(createPaymentMethodRequestModel.getSecurityCode())
                 .build();
 
         return commandGateway.sendAndWait(createPaymentMethodCommand);
     }
 
     @DeleteMapping
-    public String removePaymentMethod(@Valid @RequestBody RemovePaymentMethodRestModel removePaymentMethodRestModel) {
+    public String removePaymentMethod(@Valid @RequestBody RemovePaymentMethodRequestModel removePaymentMethodRequestModel) {
         RemovePaymentMethodCommand removePaymentMethodCommand = RemovePaymentMethodCommand.builder()
-                .paymentId(removePaymentMethodRestModel.getPaymentId())
+                .paymentId(removePaymentMethodRequestModel.getPaymentId())
                 .build();
 
         return commandGateway.sendAndWait(removePaymentMethodCommand);

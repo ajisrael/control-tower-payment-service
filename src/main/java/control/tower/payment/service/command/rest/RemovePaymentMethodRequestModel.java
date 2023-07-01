@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
-public class RemovePaymentMethodRestModel {
+public class RemovePaymentMethodRequestModel {
 
     @NotBlank(message = "PaymentId is a required field")
     private String paymentId;

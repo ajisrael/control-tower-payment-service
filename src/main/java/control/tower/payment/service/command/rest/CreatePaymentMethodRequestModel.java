@@ -1,6 +1,5 @@
 package control.tower.payment.service.command.rest;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -20,7 +19,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 
 @Getter
 @NoArgsConstructor
-public class CreatePaymentMethodRestModel {
+public class CreatePaymentMethodRequestModel {
 
     @NotBlank(message = "UserId is a required field")
     private String userId;
