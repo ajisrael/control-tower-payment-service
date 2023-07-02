@@ -1,6 +1,7 @@
 package control.tower.payment.service.query;
 
 import control.tower.core.query.queries.DoesPaymentMethodExistForUserQuery;
+import control.tower.core.utils.PaginationUtility;
 import control.tower.payment.service.core.data.PaymentMethodEntity;
 import control.tower.payment.service.core.data.PaymentMethodRepository;
 import control.tower.core.query.queries.FindAllPaymentMethodsForUserQuery;
@@ -9,12 +10,16 @@ import control.tower.payment.service.query.queries.FindPaymentMethodQuery;
 import control.tower.core.query.querymodels.PaymentMethodQueryModel;
 import lombok.AllArgsConstructor;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static control.tower.core.constants.DomainConstants.DEFAULT_PAGE;
+import static control.tower.core.constants.DomainConstants.DEFAULT_PAGE_SIZE;
 import static control.tower.payment.service.core.constants.ExceptionMessages.NO_PAYMENT_METHODS_FOUND_FOR_USER_WITH_ID;
 import static control.tower.payment.service.core.constants.ExceptionMessages.PAYMENT_METHOD_WITH_ID_DOES_NOT_EXIST;
 
@@ -25,10 +30,9 @@ public class PaymentMethodsQueryHandler {
     private final PaymentMethodRepository paymentMethodRepository;
 
     @QueryHandler
-    public List<PaymentMethodQueryModel> findAllPaymentMethods(FindAllPaymentMethodsQuery query) {
-        List<PaymentMethodEntity> paymentMethodEntities = paymentMethodRepository.findAll();
-
-        return convertPaymentMethodEntitiesToPaymentMethodQueryModels(paymentMethodEntities);
+    public Page<PaymentMethodQueryModel> findAllPaymentMethods(FindAllPaymentMethodsQuery query) {
+        return paymentMethodRepository.findAll(query.getPageable())
+                .map(this::convertPaymentMethodEntityToPaymentMethodQueryModel);
     }
 
     @QueryHandler
@@ -40,7 +44,7 @@ public class PaymentMethodsQueryHandler {
     }
 
     @QueryHandler
-    public List<PaymentMethodQueryModel> findAllPaymentMethodsForUser(FindAllPaymentMethodsForUserQuery query) {
+    public List<PaymentMethodQueryModel> findAllPaymentMethodsForUserAsList(FindAllPaymentMethodsForUserQuery query) {
         List<PaymentMethodEntity> paymentMethodEntities = paymentMethodRepository.findByUserId(query.getUserId());
 
         if (paymentMethodEntities.isEmpty()) {
@@ -48,6 +52,19 @@ public class PaymentMethodsQueryHandler {
         }
 
         return convertPaymentMethodEntitiesToPaymentMethodQueryModels(paymentMethodEntities);
+    }
+
+    @QueryHandler
+    public Page<PaymentMethodQueryModel> findAllPaymentMethodsForUserAsPage(FindAllPaymentMethodsForUserQuery query) {
+        Pageable pageable = query.getPageable();
+
+        if (pageable == null) {
+            pageable = PaginationUtility.buildPageable(
+                    Integer.parseInt(DEFAULT_PAGE), Integer.parseInt(DEFAULT_PAGE_SIZE));
+        }
+
+       return paymentMethodRepository.findByUserId(query.getUserId(), pageable)
+               .map(this::convertPaymentMethodEntityToPaymentMethodQueryModel);
     }
 
     @QueryHandler
