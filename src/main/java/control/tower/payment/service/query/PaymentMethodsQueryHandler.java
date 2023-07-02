@@ -47,10 +47,6 @@ public class PaymentMethodsQueryHandler {
     public List<PaymentMethodQueryModel> findAllPaymentMethodsForUserAsList(FindAllPaymentMethodsForUserQuery query) {
         List<PaymentMethodEntity> paymentMethodEntities = paymentMethodRepository.findByUserId(query.getUserId());
 
-        if (paymentMethodEntities.isEmpty()) {
-            throw new IllegalArgumentException(String.format(NO_PAYMENT_METHODS_FOUND_FOR_USER_WITH_ID, query.getUserId()));
-        }
-
         return convertPaymentMethodEntitiesToPaymentMethodQueryModels(paymentMethodEntities);
     }
 
